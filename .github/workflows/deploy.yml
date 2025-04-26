@@ -44,5 +44,4 @@ jobs:
           --image gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}:latest \
           --platform managed \
           --region ${{ env.REGION }} \
-          --allow-unauthenticated \
-          --set-env-vars SMTP_USER=${{ secrets.SMTP_USER }},SMTP_PASS=${{ secrets.SMTP_PASS }}
+          --allow-unauthenticated
