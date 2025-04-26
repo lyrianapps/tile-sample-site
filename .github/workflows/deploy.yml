@@ -1,48 +1,20 @@
-name: Deploy to Cloud Run Development
-
-env:
-  SERVICE_NAME: tile-sample-site
-  PROJECT_ID: opportune-lore-422100-i5
-  REGION: us-central1
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches:
-    - develop
+    - main # Change to your branch name if needed
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Authenticate with Google Cloud
-      uses: google-github-actions/auth@v2
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
       with:
-        credentials_json: ${{ secrets.GCP_SA_KEY }}
-
-    - name: Set up Google Cloud SDK
-      uses: google-github-actions/setup-gcloud@v2
-      with:
-        project_id: ${{ env.PROJECT_ID }}
-
-    - name: Configure Docker for Google Cloud
-      run: gcloud auth configure-docker
-
-    - name: Build Docker image
-      run: |
-        docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}:latest .
-
-    - name: Push Docker image to Google Container Registry
-      run: |
-        docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}:latest
-
-    - name: Deploy to Google Cloud Run
-      run: |
-        gcloud run deploy ${{ env.SERVICE_NAME }} \
-          --image gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}:latest \
-          --platform managed \
-          --region ${{ env.REGION }} \
-          --allow-unauthenticated
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./ # Change this if your files are in a subdirectory
