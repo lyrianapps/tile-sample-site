@@ -14,7 +14,7 @@ COPY . .
 RUN sed -i 's/listen       80;/listen       ${PORT};/' /etc/nginx/conf.d/default.conf
 
 # Expose the port the app runs on (default for Cloud Run is 8080)
-EXPOSE 8088
+EXPOSE 8080
 
 # Start Nginx when the container runs
 CMD ["nginx", "-g", "daemon off;"]
